@@ -33,5 +33,8 @@ def evaluate_model(y_true, y_pred, y_prob):
     tn, fp, fn, tp = confusion_matrix(y_true, y_pred).ravel()
     print(f'cal:{tn} {fp} {fn} {tp}')
     specificity = tn / (tn + fp)
-    roc_auc = roc_auc_score(y_true, y_prob[:, 1])
+    if y_prob.shape[1] == 1:  # 如果y_prob只有一列
+        roc_auc = roc_auc_score(y_true, y_prob[:, 0])
+    else:
+        roc_auc = roc_auc_score(y_true, y_prob[:, 1])
     return precision, recall, specificity, f1, roc_auc
